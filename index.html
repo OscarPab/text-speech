@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>speech</title>
+</head>
+
+<body>
+    <div class="container">
+        <div id="speech-container">
+            <p id="text-output">...</p>
+            <button id="start-button">Start</button>
+            <button id="stop-button">Stop</button>
+        </div>
+        <div id="speech-container2">
+            <textarea id="text-input"></textarea>
+            <button id="speak-button">Habla</button>
+        </div>
+    </div>
+    <style>
+        
+        body {
+            background-color: aquamarine;
+        }
+
+        #speech-container2 {
+
+            display: flex;
+            flex-direction: row-reverse;
+            align-content: center;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        textarea {
+            width: 500px;
+            height: 200px;
+            margin-bottom: 20px;
+            font-size: 22px;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: lightblue;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        #speech-container {
+            flex-direction: column;
+            align-items: center;
+            align-content: flex-start;
+            justify-content: flex-start;
+        }
+
+        #text-output {
+            font-size: 22px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            background-color: lightblue;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        const startButton = document.getElementById("start-button");
+        const stopButton = document.getElementById("stop-button");
+        const textOutput = document.getElementById("text-output");
+
+        startButton.addEventListener("click", startRecognition);
+        stopButton.addEventListener("click", stopRecognition);
+
+        function startRecognition() {
+            recognition.start();
+        }
+
+        function stopRecognition() {
+            recognition.stop();
+        }
+
+        recognition.addEventListener("result", onSpeechResult);
+
+        function onSpeechResult(event) {
+            const speechToText = event.results[0][0].transcript;
+            textOutput.innerHTML = speechToText;
+        }
+
+        const textInput = document.getElementById("text-input");
+        const speakButton = document.getElementById("speak-button");
+
+        speakButton.addEventListener("click", speakText);
+
+        function speakText() {
+            const speech = new SpeechSynthesisUtterance();
+            speech.text = textInput.value;
+            speech.volume = 1;
+            speech.rate = 1;
+            speech.pitch = 1;
+            window.speechSynthesis.speak(speech);
+        }
+
+
+    </script>
+</body>
+
+</html>
